@@ -1,0 +1,115 @@
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Runner: processes
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Chooser: simple
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Configuration suite_name = "Assignment1 Tests"
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Configuration cache_filename = "/Users/gloriatan/Documents/assn1/_build/default/tests/oUnit-$(suite_name).cache"
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Configuration run_gc_full_major = "true"
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Configuration display = "true"
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Configuration results_style_1_X = "false"
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Configuration testdata_dir = "none"
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Configuration health_check_interval = "1."
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Configuration verbose = "false"
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Configuration chooser = "simple"
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Configuration output_html_dir = "none"
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Configuration processes_kill_period = "5."
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Configuration runner = "processes"
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Configuration shards = "2"
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Configuration processes_grace_period = "5."
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Configuration log_encoding = "utf-8"
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Configuration output_junit_file = "none"
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Configuration ci = "false"
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Configuration output_file = "/Users/gloriatan/Documents/assn1/_build/default/tests/oUnit-$(suite_name)-$(shard_id).log"
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Using 2 workers maximum.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Starting worker number Glorias-MacBook-Pro-2.local#01.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Worker Glorias-MacBook-Pro-2.local#01 started.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Starting worker number Glorias-MacBook-Pro-2.local#02.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Worker Glorias-MacBook-Pro-2.local#02 started.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:0:Section 1:1:Reverse n, Assignment1 Tests:0:Section 1:0:Count Occurrences.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#01 I: Start test Assignment1 Tests:0:Section 1:0:Count Occurrences.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:0:Section 1:1:Reverse n, Assignment1 Tests:0:Section 1:0:Count Occurrences.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#02 I: Start test Assignment1 Tests:0:Section 1:1:Reverse n.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:0:Section 1:1:Reverse n, Assignment1 Tests:0:Section 1:0:Count Occurrences.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#01 I: Test Assignment1 Tests:0:Section 1:0:Count Occurrences is successful.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:0:Section 1:1:Reverse n, Assignment1 Tests:0:Section 1:0:Count Occurrences.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#01 I: End test Assignment1 Tests:0:Section 1:0:Count Occurrences.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:0:Section 1:1:Reverse n, Assignment1 Tests:0:Section 1:0:Count Occurrences.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:0:Section 1:2:Partition, Assignment1 Tests:0:Section 1:1:Reverse n.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#01 I: Start test Assignment1 Tests:0:Section 1:2:Partition.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:0:Section 1:2:Partition, Assignment1 Tests:0:Section 1:1:Reverse n.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#02 I: Test Assignment1 Tests:0:Section 1:1:Reverse n is successful.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:0:Section 1:2:Partition, Assignment1 Tests:0:Section 1:1:Reverse n.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#02 I: End test Assignment1 Tests:0:Section 1:1:Reverse n.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:0:Section 1:2:Partition, Assignment1 Tests:0:Section 1:1:Reverse n.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:0:Section 1:3:Slice, Assignment1 Tests:0:Section 1:2:Partition.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#02 I: Start test Assignment1 Tests:0:Section 1:3:Slice.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:0:Section 1:3:Slice, Assignment1 Tests:0:Section 1:2:Partition.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#01 I: Test Assignment1 Tests:0:Section 1:2:Partition is successful.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:0:Section 1:3:Slice, Assignment1 Tests:0:Section 1:2:Partition.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#01 I: End test Assignment1 Tests:0:Section 1:2:Partition.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:0:Section 1:3:Slice, Assignment1 Tests:0:Section 1:2:Partition.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:0:Section 1:4:List Comprehension, Assignment1 Tests:0:Section 1:3:Slice.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#01 I: Start test Assignment1 Tests:0:Section 1:4:List Comprehension.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:0:Section 1:4:List Comprehension, Assignment1 Tests:0:Section 1:3:Slice.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#02 I: Test Assignment1 Tests:0:Section 1:3:Slice is successful.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#01 I: Test Assignment1 Tests:0:Section 1:4:List Comprehension is successful.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:0:Section 1:4:List Comprehension, Assignment1 Tests:0:Section 1:3:Slice.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#02 I: End test Assignment1 Tests:0:Section 1:3:Slice.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#01 I: End test Assignment1 Tests:0:Section 1:4:List Comprehension.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:0:Section 1:4:List Comprehension, Assignment1 Tests:0:Section 1:3:Slice.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:1:Section 2:1:Fetch Column, Assignment1 Tests:1:Section 2:0:nth.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#01 I: Start test Assignment1 Tests:1:Section 2:0:nth.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#02 I: Start test Assignment1 Tests:1:Section 2:1:Fetch Column.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:1:Section 2:1:Fetch Column, Assignment1 Tests:1:Section 2:0:nth.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#02 I: Test Assignment1 Tests:1:Section 2:1:Fetch Column is successful.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:1:Section 2:1:Fetch Column, Assignment1 Tests:1:Section 2:0:nth.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#01 I: Test Assignment1 Tests:1:Section 2:0:nth is successful.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#02 I: End test Assignment1 Tests:1:Section 2:1:Fetch Column.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:1:Section 2:1:Fetch Column, Assignment1 Tests:1:Section 2:0:nth.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#01 I: End test Assignment1 Tests:1:Section 2:0:nth.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:1:Section 2:2:Verify List, Assignment1 Tests:1:Section 2:0:nth.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Still 2 tests running : Assignment1 Tests:1:Section 2:3:Verify Solution, Assignment1 Tests:1:Section 2:2:Verify List.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:1:Section 2:3:Verify Solution, Assignment1 Tests:1:Section 2:2:Verify List.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#02 I: Start test Assignment1 Tests:1:Section 2:2:Verify List.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Still 2 tests running : Assignment1 Tests:1:Section 2:3:Verify Solution, Assignment1 Tests:1:Section 2:2:Verify List.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:1:Section 2:3:Verify Solution, Assignment1 Tests:1:Section 2:2:Verify List.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#01 I: Start test Assignment1 Tests:1:Section 2:3:Verify Solution.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Still 2 tests running : Assignment1 Tests:1:Section 2:3:Verify Solution, Assignment1 Tests:1:Section 2:2:Verify List.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:1:Section 2:3:Verify Solution, Assignment1 Tests:1:Section 2:2:Verify List.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#02 I: Test Assignment1 Tests:1:Section 2:2:Verify List is successful.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Still 2 tests running : Assignment1 Tests:1:Section 2:3:Verify Solution, Assignment1 Tests:1:Section 2:2:Verify List.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:1:Section 2:3:Verify Solution, Assignment1 Tests:1:Section 2:2:Verify List.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#02 I: End test Assignment1 Tests:1:Section 2:2:Verify List.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Still 2 tests running : Assignment1 Tests:1:Section 2:3:Verify Solution, Assignment1 Tests:1:Section 2:2:Verify List.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 2 tests running: Assignment1 Tests:1:Section 2:3:Verify Solution, Assignment1 Tests:1:Section 2:2:Verify List.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#01 I: Test Assignment1 Tests:1:Section 2:3:Verify Solution is successful.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Still 1 tests running : Assignment1 Tests:1:Section 2:3:Verify Solution.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 1 tests running: Assignment1 Tests:1:Section 2:3:Verify Solution.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#01 I: End test Assignment1 Tests:1:Section 2:3:Verify Solution.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Still 1 tests running : Assignment1 Tests:1:Section 2:3:Verify Solution.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 1 tests running: Assignment1 Tests:1:Section 2:3:Verify Solution.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: 0 tests running: .
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Worker Glorias-MacBook-Pro-2.local#02 has ended.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Worker Glorias-MacBook-Pro-2.local#01 has ended.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Used 2 worker during test execution.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Run 5 tests with shard Glorias-MacBook-Pro-2.local#01.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Run 4 tests with shard Glorias-MacBook-Pro-2.local#02.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Check health of shard Glorias-MacBook-Pro-2.local#01, 1 times.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Check health of shard Glorias-MacBook-Pro-2.local#02, 3 times.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: ==============
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Summary:
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Test Assignment1 Tests:1:Section 2:3:Verify Solution is successful.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Test Assignment1 Tests:1:Section 2:2:Verify List is successful.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Test Assignment1 Tests:1:Section 2:0:nth is successful.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Test Assignment1 Tests:1:Section 2:1:Fetch Column is successful.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Test Assignment1 Tests:0:Section 1:4:List Comprehension is successful.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Test Assignment1 Tests:0:Section 1:3:Slice is successful.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Test Assignment1 Tests:0:Section 1:2:Partition is successful.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Test Assignment1 Tests:0:Section 1:1:Reverse n is successful.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Test Assignment1 Tests:0:Section 1:0:Count Occurrences is successful.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Ran: 9 tests in: 0.11 seconds.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Cases: 9.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Tried: 9.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Errors: 0.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Failures: 0.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Skip: 0.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Todo: 0.
+2022-02-02T02:37:40+00:00 Glorias-MacBook-Pro-2.local#00 I: Timeout: 0.

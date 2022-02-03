@@ -2,8 +2,8 @@
 
 PL Assignment 1
  
-Name                  : 
-List of Collaborators :
+Name                  : Shuyao Tan
+List of Collaborators : Tingyao Li, Mengchu Li
 
 Please make a good faith effort at listing people you discussed any 
 problems with here, as per the course academic integrity policy.  
@@ -66,18 +66,29 @@ let rec count_occurrences elm l =
 			You can assume that n >= 0.
 *)
 
+(* 
+   find the last len(list) - n elements of a list 
+*)
 let rec last_n n lst =
    match lst with
    |  [] -> []
-   |  x :: xs -> if n = 1 then xs else last_n (n-1) xs
+   |  x :: xs -> if n = 0 then x :: xs else if n = 1 then xs else last_n (n-1) xs
  ;;
 
+(* 
+   reverse the first n elements of a list. Truncate the rest of the list.
+   Example: 
+   reverse_first 3 [1;2;3;4;5;6] ;;
+   Details:
+   -> (reverse_sub 2 [2;3;4;5;6]) @ [1] -> ((reverse_sub 1 [3;4;5;6]) @ [2]) @ 1 -> 3 @ 2 @ 1 = [3;2;1] 
+ *)
 let rec reverse_sub n lst =
    match lst with
    |  [] -> []
-   |  x :: xs -> if n = 1 then [x] else reverse_sub (n-1) xs @ [x]
+   |  x :: xs -> if n = 0 then [] else if n = 1 then [x] else reverse_sub (n-1) xs @ [x]
  ;;
 
+ 
  let reverse_n n lst = reverse_sub n lst @ last_n n lst ;; 
 
 
@@ -95,18 +106,18 @@ let rec reverse_sub n lst =
 (* 1c. Sometimes we wish to pick out certain elements in a list that meet a specified
 			 condition from the rest, such as getting natural numbers from a list of integers.
 			 We can write a general function that will split the list in such a way.
-
 			 Note that the order in the resulting list does not matter; as long as you have the
 			 right elements in the respective partition, the function will be considered as correct.
 *)
 
-(* let partition l cond_f = unimplemented ();; *)
+(* consing the element if it meets the condition *)
 let rec match_pattern l cond_f = 
    match l with
    |  [] -> []
    |  x :: xs -> if cond_f x then x :: match_pattern xs cond_f else match_pattern xs cond_f
  ;;
 
+(* consing the element if it does not meet the condition *)
 let rec unmatch_pattern l cond_f = 
    match l with
    |  [] -> []
@@ -135,40 +146,25 @@ let partition l cond_f = (match_pattern l cond_f,  unmatch_pattern l cond_f) ;;
 			- If end < init, return [].
 
 *)
-
-(* let rec slice l init fin jump =  *)
-(* let rec find x lst =
-   match lst with
-   | [] -> 0
-   | h :: t -> if x = h then 0 else 1 + find x t
- ;;
-
-let rec helper cond_f l init fin jump =
-   match l with
-   | [] -> []
-   | x :: xs -> if (find x l) >= init then x :: helper cond_f xs init fin jump else helper cond_f xs init fin jump
- ;; *)
    
-
-(* let rec step l jump index count = 
+(* simple version of step function  *)
+(* 
+let rec step l jump index count = 
    match l with 
    | [] -> []
    | x :: xs -> if index = count then x :: step xs jump (index + 1) (index+jump) else step xs jump (index + 1) count
 ;; *)
 
-(* let rec slice l init fin jump = 
-   match l with
-   | [] -> []
-   | x :: xs -> if fin = 0 then [] else if init <= 0 && fin > 0 then x :: slice xs (init-1) (fin-1) jump else slice xs (init-1) (fin-1) jump
-;; *)
-
+(* use an aux. function with 2 additional arguments, index and count. `count` is a variable that initiates to the value of `init` 
+and is incremented by `jump` each time the function is called. In this way, the step functionality can be realized.
+We go through the list and return the elements that are between `init` and `fin` (exclusive). *)
 let slice l init fin jump = 
    let rec slice_inner l init fin jump index count = 
       match l with
       | [] -> []
       | x :: xs -> if fin = 0 then [] else if init <= 0 && fin > 0 && index = count then x :: slice_inner xs (init-1) (fin-1) jump (index+1) (index+jump) else slice_inner xs (init-1) (fin-1) jump (index+1) count
    in
-   slice_inner l init fin jump 0 (init)
+   slice_inner l init fin jump 0 init
 ;;
 
 
@@ -269,15 +265,10 @@ val range : int -> int list = <fun>
 
 let rec nth lst n = 
    match lst with
-   | [] -> failwith "Invalid index"
-   | x :: xs -> if n = 1 then x else nth xs (n-1)
+   | [] -> failwith "Empty list or invalid index"
+   | x :: xs ->  if n = 1 then x else nth xs (n-1)
  ;;
 
-(* let rec find x lst =
-   match lst with
-   | [] -> 0
-   | h :: t -> if x = h then 0 else 1 + find x t
- ;; *)
 
 (*
 # nth [1;0;0;0;0;0;0;0] 1 ;;
@@ -293,12 +284,10 @@ let rec nth lst n =
 			 as an integer list.
  *)
 
-(* let fetch_column grid col = unimplemented ();; *)
-
 let rec fetch_column grid col = 
    match grid with
    | [] -> []
-   | x :: xs -> nth x col :: fetch_column xs (col)
+   | x :: xs -> nth x col :: fetch_column xs col
 ;;
 
 (*
@@ -324,8 +313,6 @@ let rec fetch_column grid col =
 			 			verify_list [1; 0; 0; 0; 1; 0; 0; 0] 19 = false;;
 *)
 
-(* let verify_list lst sum = unimplemented ();; *)
-
 let verify_list lst sum = 
    let rec calculate_sum lst sum index counter = 
       match lst with
@@ -345,8 +332,6 @@ let verify_list lst sum =
 
 (* 2d. Now we can put it all together and verify the entire grid! *)
 
-(* let verify_solution dimension grid row_vals col_vals = unimplemented ();; *)
-
 let rec verify_solution_row grid row_vals index = 
    match grid with
    | [] -> true
@@ -354,7 +339,6 @@ let rec verify_solution_row grid row_vals index =
       if verify_list x (nth row_vals index) then verify_solution_row xs row_vals (index+1) else false
 ;;
 
-(* let gen_col_list grid index = fetch_column grid index ;; *)
 let rec verify_solution_col dimension grid fetch_column col_vals cnt = 
    if cnt <= dimension then verify_list (fetch_column grid cnt) (nth col_vals cnt) && (verify_solution_col dimension grid fetch_column col_vals (cnt+1)) else true
 ;;
@@ -362,14 +346,6 @@ let rec verify_solution_col dimension grid fetch_column col_vals cnt =
 let verify_solution dimension grid row_vals col_vals =
    (verify_solution_row grid row_vals 1) && (verify_solution_col dimension grid fetch_column col_vals 1)
 ;;
-
-(* let rec verify dimension grid row_vals index  = 
-   match grid with
-   | [] -> failwith "??"
-   | x :: xs -> 
-      let row_sum = nth row_vals index in
-      if verify_list x row_sum then true else false
-;; *)
 
 
 

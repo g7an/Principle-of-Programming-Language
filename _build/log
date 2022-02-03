@@ -1,10 +1,10 @@
-# dune build
+# dune test
 # OCAMLPARAM: unset
 # Workspace root: /Users/gloriatan/Documents/assn1
-$ /usr/bin/getconf _NPROCESSORS_ONLN > /var/folders/3h/yyfk47h55612hn1t58lb31gh0000gn/T/dune789abb.output 2> /dev/null
+$ /usr/bin/getconf _NPROCESSORS_ONLN > /var/folders/3h/yyfk47h55612hn1t58lb31gh0000gn/T/dune6cd067.output 2> /dev/null
 # Auto-detected concurrency: 10
 # disable binary cache
-$ /Users/gloriatan/.opam/4.13.1/bin/ocamlc.opt -config > /var/folders/3h/yyfk47h55612hn1t58lb31gh0000gn/T/dune9b547f.output
+$ /Users/gloriatan/.opam/4.13.1/bin/ocamlc.opt -config > /var/folders/3h/yyfk47h55612hn1t58lb31gh0000gn/T/dune3f75f4.output
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
@@ -109,9 +109,13 @@ $ /Users/gloriatan/.opam/4.13.1/bin/ocamlc.opt -config > /var/folders/3h/yyfk47h
 #      ; windows_unicode = false
 #      }
 #  }
-$ (cd _build/default && /Users/gloriatan/.opam/4.13.1/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -a -o src/assignment.cma src/.assignment.objs/byte/assignment.cmo)
-$ (cd _build/default/src && /usr/bin/zip submission.zip assignment.ml dune)
->   adding: assignment.ml (deflated 65%)
->   adding: dune (deflated 33%)
-$ (cd _build/default && /Users/gloriatan/.opam/4.13.1/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -o tests/tests.bc /Users/gloriatan/.opam/4.13.1/lib/ocaml/unix.cma /Users/gloriatan/.opam/4.13.1/lib/stdlib-shims/stdlib_shims.cma /Users/gloriatan/.opam/4.13.1/lib/ounit2/advanced/oUnitAdvanced.cma /Users/gloriatan/.opam/4.13.1/lib/ounit2/oUnit.cma src/assignment.cma tests/.tests.eobjs/byte/dune__exe__Tests.cmo)
-$ (cd _build/default && /Users/gloriatan/.opam/4.13.1/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -shared -linkall -I src -o src/assignment.cmxs src/assignment.cmxa)
+$ (cd _build/default && /Users/gloriatan/.opam/4.13.1/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I src/.assignment.objs/byte -no-alias-deps -opaque -o src/.assignment.objs/byte/assignment.cmo -c -impl src/assignment.ml)
+$ (cd _build/default && /Users/gloriatan/.opam/4.13.1/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I src/.assignment.objs/byte -I src/.assignment.objs/native -intf-suffix .ml -no-alias-deps -opaque -o src/.assignment.objs/native/assignment.cmx -c -impl src/assignment.ml)
+$ (cd _build/default && /Users/gloriatan/.opam/4.13.1/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -a -o src/assignment.cmxa src/.assignment.objs/native/assignment.cmx)
+$ (cd _build/default && /Users/gloriatan/.opam/4.13.1/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -I tests/.tests.eobjs/byte -I /Users/gloriatan/.opam/4.13.1/lib/bytes -I /Users/gloriatan/.opam/4.13.1/lib/ounit2 -I /Users/gloriatan/.opam/4.13.1/lib/ounit2/advanced -I /Users/gloriatan/.opam/4.13.1/lib/stdlib-shims -I src/.assignment.objs/byte -no-alias-deps -opaque -o tests/.tests.eobjs/byte/dune__exe__Tests.cmo -c -impl tests/tests.ml)
+$ (cd _build/default && /Users/gloriatan/.opam/4.13.1/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I tests/.tests.eobjs/byte -I tests/.tests.eobjs/native -I /Users/gloriatan/.opam/4.13.1/lib/bytes -I /Users/gloriatan/.opam/4.13.1/lib/ounit2 -I /Users/gloriatan/.opam/4.13.1/lib/ounit2/advanced -I /Users/gloriatan/.opam/4.13.1/lib/stdlib-shims -I src/.assignment.objs/byte -I src/.assignment.objs/native -intf-suffix .ml -no-alias-deps -opaque -o tests/.tests.eobjs/native/dune__exe__Tests.cmx -c -impl tests/tests.ml)
+$ (cd _build/default && /Users/gloriatan/.opam/4.13.1/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -o tests/tests.exe /Users/gloriatan/.opam/4.13.1/lib/ocaml/unix.cmxa -I /Users/gloriatan/.opam/4.13.1/lib/ocaml /Users/gloriatan/.opam/4.13.1/lib/stdlib-shims/stdlib_shims.cmxa /Users/gloriatan/.opam/4.13.1/lib/ounit2/advanced/oUnitAdvanced.cmxa /Users/gloriatan/.opam/4.13.1/lib/ounit2/oUnit.cmxa src/assignment.cmxa tests/.tests.eobjs/native/dune__exe__Tests.cmx)
+$ (cd _build/default/tests && ./tests.exe)
+> .........
+> Ran: 9 tests in: 0.11 seconds.
+> OK
