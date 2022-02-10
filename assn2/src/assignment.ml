@@ -317,8 +317,12 @@ type ('a, 'b) alist = ('a * 'b) list
   like missing keys in a more type-correct way.
 *)
 
-let assoc (k : 'a) (al : ('a, 'b) alist) : 'b option = 
-  unimplemented ()
+let rec assoc (k : 'a) (al : ('a, 'b) alist) : 'b option = 
+  match al with
+  | [] -> None
+  | (x, y) :: xs -> 
+    if k = x then Some y
+    else assoc k xs ;;
 
 (* 
 # assoc "Dog" ([("Dog", 4); ("Cat", 42)]) ;;
@@ -333,7 +337,11 @@ let assoc (k : 'a) (al : ('a, 'b) alist) : 'b option =
 *)
 
 let exists (k : 'a) (al : ('a, 'b) alist) : bool = 
-  unimplemented ()
+  match assoc k al with
+  | None -> false
+  | Some _ -> true ;;
+
+
 
 (* 
 # exists "Kitten" ([("Kitten", 13); ("Cat", 42)]) ;;
@@ -351,7 +359,15 @@ let exists (k : 'a) (al : ('a, 'b) alist) : bool =
 *)
 
 let update (key : 'a) (v' : 'b) (al : ('a, 'b) alist) : ('a, 'b) alist = 
-  unimplemented ()
+  if exists key al then 
+    let rec helper (k : 'a) (v : 'b) (al : ('a, 'b) alist) : ('a, 'b) alist = 
+      match al with
+      | [] -> []
+      | (x, y) :: xs -> 
+        if k = x then (k, v) :: xs
+        else (x, y) :: helper k v xs
+    in helper key v' al
+  else (key, v') :: al ;;
 
 (* 
 # update "Dukat" "Evil incarnate" [("Kira", "Bajoran"); ("Sisko", "Human?"); ("Odo", "Goo")];;
@@ -379,8 +395,23 @@ let init_drawer =
   your drawer!
 *)
 
+let rec remove_record (p : pepper) (drawer : (pepper, int) alist) : (pepper, int) alist  = 
+  match drawer with
+  | [] -> []
+  | (x, y) :: xs ->
+    if x = p then xs
+    else (x, y) :: remove_record p xs ;;
+  
+let int_of_intoption = function None -> 0 | Some n -> n;;
 let use_pepper (p : pepper) (drawer : (pepper, int) alist) : (pepper, int) alist = 
-  unimplemented ()
+  if exists p drawer then 
+    let new_record = (p, int_of_intoption (assoc p drawer) + 1)
+      in new_record :: remove_record p drawer
+  else
+      update p 0 drawer ;;
+    
+
+
 
 (* 
 # use_pepper Cayenne init_drawer ;;
@@ -401,7 +432,20 @@ let use_pepper (p : pepper) (drawer : (pepper, int) alist) : (pepper, int) alist
 *)
 
 let spicy_score (drawer : (pepper, int) alist) : int = 
-  unimplemented ()
+  let rec helper (drawer : (pepper, int) alist) : int = 
+    match drawer with
+    | [] -> 0
+    | (x, y) :: xs -> 
+      let score = match x with
+        | BellPepper -> 10
+        | Poblano -> 20
+        | Cayenne -> 35
+        | Habanero -> 50
+        | GhostPepper -> 60
+        | PepperX -> 80
+      in score * y + helper xs
+  in helper drawer ;;
+
 
 (* 
 # spicy_score (use_pepper Cayenne init_drawer) ;;
@@ -424,9 +468,32 @@ let spicy_score (drawer : (pepper, int) alist) : int =
   
   (For more information on k-sorted sequence, see https://en.wikipedia.org/wiki/K-sorted_sequence)
 *)
+(* k-sorted list *)
+let compare (x: 'a * 'b) (y: 'a * 'b) : int = 
+  match x with
+    (key, value)  -> 
+      match y with
+        (key', value') -> 
+          if value = value' then 0
+          else if value < value' then 1
+          else -1
+  ;;
+
+(* get the index of element in a list *)
+let rec index_of (key: 'a) (lst: (pepper, int) alist) (init: int) = 
+  match lst with
+  | [] -> failwith "Item does not exist"
+  | ((k, v) :: xs) -> if key = k then init else index_of key xs (init + 1) ;;
 
 let is_good_drawer_arrangement (drawer : (pepper, int) alist) : int = 
-  unimplemented () 
+  let rec helper (drawer : (pepper, int) alist) (accum: int) : int = 
+    let sorted_drawer = List.sort compare drawer in
+      match drawer with
+      | [] -> accum
+      | (x, y) :: xs -> 
+        helper xs (accum + (abs ((index_of x sorted_drawer 0) - (index_of x drawer 0))))
+  in helper drawer 0 ;;
+
 
 (* 
 # is_good_drawer_arrangement (use_pepper Cayenne init_drawer) ;;
