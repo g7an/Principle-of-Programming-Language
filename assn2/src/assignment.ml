@@ -490,8 +490,9 @@ let is_good_drawer_arrangement (drawer : (pepper, int) alist) : int =
     let sorted_drawer = List.sort compare drawer in
       match drawer with
       | [] -> accum
-      | (x, y) :: xs -> 
-        helper xs (accum + (abs ((index_of x sorted_drawer 0) - (index_of x drawer 0))))
+      | (x, y) :: xs -> if accum < (abs ((index_of x sorted_drawer 0) - (index_of x drawer 0))) then 
+        helper xs (abs ((index_of x sorted_drawer 0) - (index_of x drawer 0))) else helper xs accum
+        (* helper xs (accum + (abs ((index_of x sorted_drawer 0) - (index_of x drawer 0)))) *)
   in helper drawer 0 ;;
 
 
@@ -532,14 +533,47 @@ let is_good_drawer_arrangement (drawer : (pepper, int) alist) : int =
   Given any function f as an argument, create a function that returns a
   data structure consisting of f and its cache.
 *)  
-let new_cached_fun f = unimplemented ()
+(* type ('a,'b) struc = { func : 'a -> 'b; mutable (a * b): ('a, 'b) }  ;; *)
+type ('a,'b) struc = { func : 'a -> 'b; mutable cache: ('a, 'b) alist }  ;;
+let new_cached_fun f = 
+  let result = { func=f; cache=[] } in
+    result ;;
+
+
+  (* match struc with
+  | (f, []) -> (f, [])
+  |  (f, (x, y) :: xs) -> if  *)
+
+
+  (* let m = ref [] in
+  fun x ->
+    try
+      List.assoc x !m
+    with
+    Not_found ->
+      let y = f x in
+        m := (x, y) :: !m ;
+        y ;; *)
+
 
 (*
   Write a function that takes the above function-cache data structure,
   applies an argument to it (using the cache if possible) and returns
   the result.
 *)
-let apply_fun_with_cache cached_fn x = unimplemented ()
+let apply_fun_with_cache cached_fn x = 
+  match cached_fn with
+  (* { func = f; input=input; output=output } -> if input = x then output else ( x, (f x) ) :: cache; (f x) ;; *)
+  { func = f; cache=cache_local } -> 
+    match cache_local with 
+    | [] -> (f x)
+    | ((x', y) :: xs) -> if x = x' then y else 
+    let var = (f x) in 
+     (cached_fn.cache <- (x, var) :: cache_local); var ;;
+      (* apply_fun_with_cache cached_fn x ;; *)
+    (* if input = x then output else (f x) :: output ;; *)
+  (* let (key, value) = cached_fn in
+    if key = x then value else (cached_fn x) ;; *)
 
 (*
   The following function makes a cached version for f that looks
