@@ -1,0 +1,14 @@
+
+(library
+  (name assignment)
+  (wrapped false))
+
+(rule
+  (target submission.zip)
+  (mode (promote (until-clean)))
+  (deps 
+    ./assignment.ml
+    ./dune
+  )
+  (action
+    (run zip submission.zip %{deps})))

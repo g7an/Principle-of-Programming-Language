@@ -131,12 +131,12 @@ let square_of n = n * n
 let dec n = n - 1
 
 (* NOTE: Delete these two lines once you finish implementing Section 4 *)
-let cached_square_of _ = unimplemented ()
-let cached_dec _ = unimplemented ()
+(* let cached_square_of _ = unimplemented ()
+let cached_dec _ = unimplemented () *)
 
 (* Note: Use these two functions instead to test your Section 4 answer *)
-(* let cached_square_of = make_cached_fun square_of
-let cached_dec = make_cached_fun dec *)
+let cached_square_of = make_cached_fun square_of
+let cached_dec = make_cached_fun dec
 
 let test_cached_fun _ =
   assert_equal 9

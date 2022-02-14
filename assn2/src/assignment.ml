@@ -2,8 +2,8 @@
 
 PL Assignment 2
  
-Name                  : 
-List of Collaborators :
+Name                  : Shuyao Tan  
+List of Collaborators : Tingyao Li
 
 Please make a good faith effort at listing people you discussed any 
 problems with here, as per the course academic integrity policy.  
@@ -55,13 +55,21 @@ let f3 : 'a 'b. (unit -> 'a -> 'b) -> 'a -> (unit -> 'b) = (fun f a ()  -> f () 
 
 let f4 : 'a 'b. 'a -> ('b option) list = (fun x -> None::[]) ;;
 
-let f5 : 'a 'b. ('a -> 'b) list -> 'a list -> 'b list = (fun _ _ -> []) ;;
+let rec f5 : 'a 'b. ('a -> 'b) list -> 'a list -> 'b list = 
+  (fun f a -> 
+    match f with         
+    | [] -> []
+    | x::lr -> x (List.hd a):: f5 lr a
+  ) 
+  ;;
 
-let rec func f a = 
+
+(* (fun _ _ -> []) ;; *)
+(* let rec func f a = 
   match f with         
   | [] -> []
   | x::lr -> x (List.hd a):: func lr a
-;;
+;; *)
 
 
 type ('a, 'b) sometype = 
@@ -485,15 +493,17 @@ let rec index_of (key: 'a) (lst: (pepper, int) alist) (init: int) =
   | [] -> failwith "Item does not exist"
   | ((k, v) :: xs) -> if key = k then init else index_of key xs (init + 1) ;;
 
-let is_good_drawer_arrangement (drawer : (pepper, int) alist) : int = 
-  let rec helper (drawer : (pepper, int) alist) (accum: int) : int = 
-    let sorted_drawer = List.sort compare drawer in
+let is_good_drawer_arrangement (drawer : (pepper, int) alist) : int =
+  let new_drawer = drawer in
+  let rec helper_local (drawer : (pepper, int) alist) (accum: int) : int = 
       match drawer with
       | [] -> accum
-      | (x, y) :: xs -> if accum < (abs ((index_of x sorted_drawer 0) - (index_of x drawer 0))) then 
-        helper xs (abs ((index_of x sorted_drawer 0) - (index_of x drawer 0))) else helper xs accum
-        (* helper xs (accum + (abs ((index_of x sorted_drawer 0) - (index_of x drawer 0)))) *)
-  in helper drawer 0 ;;
+      | (x, y) :: xs -> 
+        let dist = (abs ((index_of x new_drawer 0) - (index_of x (List.sort compare new_drawer) 0))) in
+        (* print dist and type of x *)
+        (* Printf.printf "dist: %d \n" dist; *)
+        helper_local xs (max accum dist) 
+  in helper_local drawer 0 ;;
 
 
 (* 
@@ -501,6 +511,8 @@ let is_good_drawer_arrangement (drawer : (pepper, int) alist) : int =
 - : int = 0
 # is_good_drawer_arrangement (use_pepper Habanero (use_pepper Cayenne (use_pepper Cayenne init_drawer))) ;;
 - : int = 1
+# is_good_drawer_arrangement (use_pepper BellPepper (use_pepper Poblano (use_pepper PepperX (use_pepper Cayenne (use_pepper Cayenne init_drawer)))))
+- : int = 3
 *)
 
 (*************** Section 4: Mutable State and Memoization ******************)
@@ -534,7 +546,7 @@ let is_good_drawer_arrangement (drawer : (pepper, int) alist) : int =
   data structure consisting of f and its cache.
 *)  
 (* type ('a,'b) struc = { func : 'a -> 'b; mutable (a * b): ('a, 'b) }  ;; *)
-type ('a,'b) struc = { func : 'a -> 'b; mutable cache: ('a, 'b) alist }  ;;
+type ('a,'b) struc = { func : 'a -> 'b; mutable cache: ('a * 'b) list }  ;;
 let new_cached_fun f = 
   let result = { func=f; cache=[] } in
     result ;;
