@@ -494,12 +494,12 @@ let rec index_of (key: 'a) (lst: (pepper, int) alist) (init: int) =
   | ((k, v) :: xs) -> if key = k then init else index_of key xs (init + 1) ;;
 
 let is_good_drawer_arrangement (drawer : (pepper, int) alist) : int =
-  let new_drawer = drawer in
-  let rec helper_local (drawer : (pepper, int) alist) (accum: int) : int = 
-      match drawer with
+  (* let new_drawer = drawer in *)
+  let rec helper_local (drawer_inner : (pepper, int) alist) (accum: int) : int = 
+      match drawer_inner with
       | [] -> accum
       | (x, y) :: xs -> 
-        let dist = (abs ((index_of x new_drawer 0) - (index_of x (List.sort compare new_drawer) 0))) in
+        let dist = (abs ((index_of x drawer 0) - (index_of x (List.sort compare drawer) 0))) in
         (* print dist and type of x *)
         (* Printf.printf "dist: %d \n" dist; *)
         helper_local xs (max accum dist) 
@@ -545,7 +545,6 @@ let is_good_drawer_arrangement (drawer : (pepper, int) alist) : int =
   Given any function f as an argument, create a function that returns a
   data structure consisting of f and its cache.
 *)  
-(* type ('a,'b) struc = { func : 'a -> 'b; mutable (a * b): ('a, 'b) }  ;; *)
 type ('a,'b) struc = { func : 'a -> 'b; mutable cache: ('a * 'b) list }  ;;
 let new_cached_fun f = 
   let result = { func=f; cache=[] } in
@@ -575,13 +574,19 @@ let new_cached_fun f =
 *)
 let apply_fun_with_cache cached_fn x = 
   match cached_fn with
-  (* { func = f; input=input; output=output } -> if input = x then output else ( x, (f x) ) :: cache; (f x) ;; *)
   { func = f; cache=cache_local } -> 
-    match cache_local with 
-    | [] -> (f x)
-    | ((x', y) :: xs) -> if x = x' then y else 
-    let var = (f x) in 
-     (cached_fn.cache <- (x, var) :: cache_local); var ;;
+    let rec helper_local tuple_input x = 
+      match tuple_input with
+      | [] -> let res = (f x) in (cached_fn.cache <- (x, res) :: cache_local); res
+      | (x', y) :: xs -> if x = x' then y else helper_local xs x
+    in helper_local cache_local x ;;
+
+    (* match cache_local with 
+    | [] -> (cached_fn.cache <- (x, (f x)) :: cache_local); (f x)
+    | ((x', y) :: xs) -> if x = x' then y else apply_fun_with_cache xs x ;; *)
+
+    (* let var = (f x) in 
+     (cached_fn.cache <- (x, var) :: cache_local); var ;; *)
       (* apply_fun_with_cache cached_fn x ;; *)
     (* if input = x then output else (f x) :: output ;; *)
   (* let (key, value) = cached_fn in
