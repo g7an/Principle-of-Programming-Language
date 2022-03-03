@@ -158,7 +158,7 @@ double "2 + 4";; (* "(2 + 4) + (2 + 4)" *)
 
 (* Macros can be used in code-strings by appending them in *)
 
-let quad = "Fun z -> (" ^ double "z" ^ ") + (" ^ double "z" ^ ")";;
+let quad = "Fun z -> (" ^ double"z" ^ ") + (" ^ double"z" ^ ")";;
   
   (* this returns "Fun z -> ((z) + (z)) + ((z) + (z))" *)
 
@@ -303,6 +303,8 @@ let thaw_fr = fr ^ "304949";; (* any application will "thaw" it. *)
 let freeze e = "(Fun x -> ("^e^"))";; (* the Fun blocks the evaluator from e *)
 let thaw e = "(("^e^") 0)";; (* the 0 here is arbitrary *)
 
+(* let thaw = "(Fun x -> 5 + 2 + 10922 ) 304949 ";; the Fun blocks the evaluator from e *)
+
 (* Using Freeze and Thaw *)
 
 let lazy_num = freeze "5 + 2 + 10922";;
@@ -341,7 +343,7 @@ let let_ex = fblet "z" (* = *) "2+3" (* In *) "z + z";; (* encodes "Let z = 2 + 
     - replace a Let with a macro-let or vice-versa and get same answers 
 
    Formally, we can say the Let-version and the macro version are always equivalent:
-      Let x = e in e'   ~=   (Fun x -> e')(e)   for any possible expressions e and e' and any variable x 
+      Let x = e1 in e2   ~=   (Fun x -> e2)(e1)   for any possible expressions e1 and e2 and any variable x 
       e.g. Let x = 3+4 In x - 44 ~= (Fun x -> x - 44) (3+4) by above
       -- the ~= relation is called *operational equivalence*, we will define later.
       -- it is an equivalence relation and lets us do "algebra on programs"

@@ -27,6 +27,6 @@ Clflags.include_dirs :=
   ; "/Users/gloriatan/.opam/4.13.1/lib/trie"
   ; "/Users/gloriatan/.opam/4.13.1/lib/utop"
   ; "/Users/gloriatan/.opam/4.13.1/lib/zed"
-  ; "/Users/gloriatan/Documents/JHU Courses 22Spring/Principle of Programming Languages/dist/_build/default/Fb/.fb.objs/public_cmi"
+  ; "/Users/gloriatan/Documents/repos/Principle-of-Programming-Language/dist/_build/default/Fb/.fb.objs/public_cmi"
   ];
 UTop_main.main ();

@@ -1,12 +1,11 @@
 open Fbast
 
-exception Bug;;
 
 let rec subst (v: expr) (x) (e: expr) : expr = 
-  match v with
-  | Var y -> failwith "cannot substitue with a variable"
-  | _ -> 
-  (
+  (* match v with *)
+  (* | Var y -> failwith "cannot substitue with a variable"
+  | _ ->  *)
+  (* ( *)
   let rec substitute (e: expr) : expr = 
     match e with
     | Int x -> e
@@ -27,7 +26,7 @@ let rec subst (v: expr) (x) (e: expr) : expr =
     | Let(y, e1, e2) ->  Let(y, substitute e1, if x = y then e2 else (substitute e2))
     | _ -> failwith "substitute error" 
   in substitute e
-)
+(* ) *)
 
 let rec check_closed exp list = 
   match exp with
@@ -59,7 +58,7 @@ let rec eval e =
   match e with
   | Int x -> (Int x)
   | Bool x -> (Bool x)
-  | Var x -> failwith "Cannot have a variable in the evaluator"
+  | Var x -> failwith "Unbounded Variable Error"
   
 (* int *)
   | Plus(e1, e2) -> 
@@ -103,7 +102,7 @@ let rec eval e =
         (Bool x, Bool y) -> (Bool (x || y))
         | _ -> (failwith "Or")
     )
-  | Not(e1) ->
+  | Not(e1) -> 
     (
       let v1 = (eval e1) in
   (* interpreter for Not 1 boolean *)
@@ -126,15 +125,14 @@ let rec eval e =
   | Appl(e1, e2) ->
     (
     (* print_string "Appl: \n";   *)
-    let v2 = (eval e2) in
+    (* let v2 = (eval e2) in *)
   (* interpreter for Appl 2 expr *)
         match e1 with
-        | (Function(x, y1)) -> (eval (subst v2 x y1))
         | Appl(e3, e4) -> 
-            let v1 = (eval e1) in
-            (* match v1 with *)
-            (eval (Appl(v1, e2)))
-            (* |_ -> (failwith "Appl") *)
+          (* let v1 = (eval e1) in *)
+          (* match v1 with *)
+          (eval (Appl(eval e1, e2)))
+        | (Function(x, y1)) -> (eval (subst (eval e2) x y1))
         | _ -> 
           (failwith "Application rule")
     )
