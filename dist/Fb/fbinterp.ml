@@ -53,7 +53,7 @@ let rec eval e =
   | Int x -> (Int x)
   | Bool x -> (Bool x)
   | Var x -> failwith "Unbounded Variable Error"
-  
+
 (* int *)
   | Plus(e1, e2) -> 
     (

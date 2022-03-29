@@ -2,7 +2,7 @@
 
 PoPL Assignment 4 part 2
 Your Name : Shuyao Tan
-List of Collaborators : Tingyao Li
+List of Collaborators : Tingyao Li, Mengchu Li, Yuyang Zhou
 
    For this part, you will write some programs in Fb.  Your answers for
    this section must be in the form of OCaml strings which parse
@@ -45,7 +45,6 @@ let ycomb =
        Let repl = Fun self -> Fun x -> code (self self) x 
        In repl repl)";;
 
-let is_zero = "(Fun arg -> If arg = 0 Then True Else False)";;
 let is_not_positive = ycomb^"(Fun rec -> Fun arg1 -> Fun arg2 -> 
 If (arg1 = 0) Then True Else If (arg2 = 0) Then False Else (rec (arg1 + 1) (arg2 - 1)))";;
 
@@ -55,9 +54,9 @@ let code_lt = "(Fun rec -> Fun arg1 -> Fun arg2 ->
 let fb_lt = ycomb^code_lt;;
 
 (* adding arg1 for arg2 times for positive cases. For negative cases, flip sign and then flip back... *)
-let flip_sign = "(Fun arg -> If (("^is_not_positive^") arg arg) Then (0 - arg) Else arg)";;
+let flip_sign = "(Fun arg -> (0 - arg))";;
 let code_mul = "(Fun rec -> Fun arg1 -> Fun arg2 -> 
-   If arg2 = 0 Then 0 Else If (("^is_not_positive^") arg2 arg2) Then ("^flip_sign^") (rec arg1 (("^flip_sign^") (arg2))) Else arg1 + rec arg1 (arg2-1))";;
+   If arg2 = 0 Then 0 Else If (("^is_not_positive^") arg2 arg2) Then (("^flip_sign^") (rec arg1 ( ("^flip_sign^") arg2 ) ) ) Else arg1 + rec arg1 (arg2-1))";;
 let fb_mult = ycomb^code_mul ;;
 (* modulo operation *)
 let code_mod = "(Fun rec -> Fun arg1 -> Fun arg2 -> If ("^fb_lt^") arg1 arg2 Then arg1 Else rec (arg1-arg2) arg2 )";;
@@ -72,6 +71,8 @@ let fb_mod = ycomb^code_mod;;
       --> 5 * 3 => 15
    assert(peu ("("^fb_mult^") (-3) 5") = "-15");;
       --> (-3) * 5 => (-15)
+   assert(peu ("("^fb_mult^") 3 (-6)") = "-15");;
+      --> 3 * (-6) => (-18)
    assert(peu ("("^fb_mod^") 33 3") = "0");;
       --> 33 mod 3 => 0
    assert(peu ("("^fb_mod^") 87 4") = "3");;
@@ -112,21 +113,22 @@ let fb_church = "(Fun bool -> If bool Then ("^church_true^") Else ("^church_fals
 (* Write a function to find out the logical NOT of a church encoded bool *)
 (* not = lambda x.x false true
 --> not x = x false true = if x then false else true *)
-let fbchurch_not = "(Fun x -> If (("^fb_unchurch^") x) Then (("^fb_church^") False) Else (("^fb_church^") True))";;
-   
+let fbchurch_not = "(Fun x -> Fun t -> Fun f -> x f t)";;
+
+
 (* Write a function to find out the logical AND of two church encoded bools *)
-(* and = lambda x.lambda y.x y false
-and x y = if x then y else false *)
-let fbchurch_and = "(Fun x -> Fun y -> If (("^fb_unchurch^") x) Then y Else (("^fb_church^") False))";;
+(* and = lambda x.lambda y.x y x
+and x y = if x then y else x *)
+let fbchurch_and = "(Fun x -> Fun y -> x y x)";;
    
 (* Write a function to find out the logical OR of two church encoded bools *)
-(* or = lambda x.lambda y.x true y 
-or x y = if x then true else y *)
-let fbchurch_or = "(Fun x -> Fun y -> If (("^fb_unchurch^") x) Then (("^fb_church^") True) Else y)";;
+(* or = lambda x.lambda y.x x y 
+or x y = if x then x else y *)
+let fbchurch_or = "(Fun x -> Fun y -> x x y)";;
    
 (* Write a function to find out the logical XOR of two church encoded bools *)
 (* xor = lambda x.lambda y.if x then (not y) else y *)
-let fbchurch_xor = "(Fun x -> Fun y -> If (("^fb_unchurch^") x) Then (("^fbchurch_not^") y) Else y)";;
+let fbchurch_xor = "(Fun x -> Fun y -> x (("^fbchurch_not^") y) y)";;
    
 (* Write a function which will accept an (endoded) boolean and two frozen 
       Fb expressions and will thaw only the appropriate expression. 
@@ -134,7 +136,8 @@ let fbchurch_xor = "(Fun x -> Fun y -> If (("^fb_unchurch^") x) Then (("^fbchurc
       Think about it.)
 *)
 let thaw e = "(("^e^") 0)";;
-let fbchurch_if_then = "(Fun c_bool -> Fun x -> Fun y -> If (("^fb_unchurch^") c_bool) Then "^thaw "x"^" Else "^thaw "y"^")";;
+(* let fbchurch_if_then = "(Fun c_bool -> Fun x -> Fun y -> If (("^fb_unchurch^") c_bool) Then "^thaw "x"^" Else "^thaw "y"^")";; *)
+let fbchurch_if_then = "(Fun cond -> Fun x -> Fun y -> Let res = (cond x y) In "^thaw "res"^" )";;
       
 (*
    assert(peu (fb_unchurch^"("^fbchurch_not^church_true^")") = "False" );; 

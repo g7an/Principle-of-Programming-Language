@@ -505,8 +505,7 @@ Fun x ->
    rec with (self self) to get something like summate0. *)
 
 (* Here is the code we would like to write *)
-let code = "(Fun rec -> Fun arg -> 
-               If arg = 0 Then 0 Else arg + rec (arg - 1))"
+
 
 (* here is the replacer -- replace rec with (self self) in above
    for f here we will pass in "code" above *)
@@ -549,13 +548,20 @@ let goy0 = ycomb0^code^" 5";;
    to get ycomb that is in the book 
    -- this is an example of the beta ~= law mentioned above *)
 
+let code = "(Fun rec -> Fun arg -> 
+   If arg = 1 Then 1 Else arg + rec (arg - 1))"
 let ycomb = 
    "(Fun code -> 
        Let repl = Fun self -> Fun x -> code (self self) x 
        In repl repl)";;
 
+let ycomb = 
+"(Fun code -> 
+      Let repl = Fun self -> Fun x -> (self self) x 
+      In code(code(code(code(code(code(code(code(code(code(repl repl)))))))))) )";;
+
 (* Again lets verify this works *)
-let goy = ycomb^code^" 5";;
+let goy = ycomb^code^" 2";;
 (* peu goy;; *)
 
 (* Equivalent way with Fb names for things via `Let` .. 

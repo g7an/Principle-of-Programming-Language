@@ -1,11 +1,10 @@
-# dune utop Fb
+# dune utop
 # OCAMLPARAM: unset
 # Workspace root:
 # /Users/gloriatan/Documents/repos/Principle-of-Programming-Language/dist
-$ /usr/bin/getconf _NPROCESSORS_ONLN > /var/folders/3h/yyfk47h55612hn1t58lb31gh0000gn/T/dune66c4fb.output 2> /dev/null
-# Auto-detected concurrency: 10
+# Auto-detected concurrency: 1
 # disable binary cache
-$ /Users/gloriatan/.opam/4.13.1/bin/ocamlc.opt -config > /var/folders/3h/yyfk47h55612hn1t58lb31gh0000gn/T/dunebcb043.output
+$ /Users/gloriatan/.opam/4.13.1/bin/ocamlc.opt -config > /var/folders/3h/yyfk47h55612hn1t58lb31gh0000gn/T/dunea00a8b.output
 # Dune context:
 #  { name = "default"
 #  ; kind = "default"
@@ -30,6 +29,8 @@ $ /Users/gloriatan/.opam/4.13.1/bin/ocamlc.opt -config > /var/folders/3h/yyfk47h
 #            "/Users/gloriatan/Documents/repos/Principle-of-Programming-Language/dist"
 #        ; "INSIDE_DUNE" :
 #            "/Users/gloriatan/Documents/repos/Principle-of-Programming-Language/dist/_build/default"
+#        ; "MANPATH" :
+#            "/Users/gloriatan/Documents/repos/Principle-of-Programming-Language/dist/_build/install/default/bin"
 #        ; "OCAMLFIND_IGNORE_DUPS_IN" :
 #            "/Users/gloriatan/Documents/repos/Principle-of-Programming-Language/dist/_build/install/default/lib"
 #        ; "OCAMLPATH" :
@@ -112,10 +113,3 @@ $ /Users/gloriatan/.opam/4.13.1/bin/ocamlc.opt -config > /var/folders/3h/yyfk47h
 #      ; windows_unicode = false
 #      }
 #  }
-$ (cd _build/default/build_scripts && /bin/chmod +x ./gen_version.sh)
-$ (cd _build/default/build_scripts && ./gen_version.sh)
-$ (cd _build/default && .ppx/0bb5094b13567c3c4e1ee33245b80e63/ppx.exe --cookie 'library-name="fb"' -o Fb/version.pp.ml --impl Fb/version.ml -corrected-suffix .ppx-corrected -diff-cmd - -dump-ast)
-$ (cd _build/default && /Users/gloriatan/.opam/4.13.1/bin/ocamldep.opt -modules -impl Fb/version.pp.ml) > _build/default/Fb/.fb.objs/version.pp.ml.d
-$ (cd _build/default && /Users/gloriatan/.opam/4.13.1/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -w -27-33-39 -g -bin-annot -I Fb/.fb.objs/byte -I Fb/.fb.objs/public_cmi -I /Users/gloriatan/.opam/4.13.1/lib/ppx_deriving/runtime -I /Users/gloriatan/.opam/4.13.1/lib/result -no-alias-deps -opaque -o Fb/.fb.objs/byte/version.cmo -c -impl Fb/version.pp.ml)
-$ (cd _build/default && /Users/gloriatan/.opam/4.13.1/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -w -27-33-39 -g -a -o Fb/fb.cma Fb/.fb.objs/byte/version.cmo Fb/.fb.objs/byte/fbast.cmo Fb/.fb.objs/byte/fbtype.cmo Fb/.fb.objs/byte/fbpp.cmo Fb/.fb.objs/byte/fbparser.cmo Fb/.fb.objs/byte/fboptions.cmo Fb/.fb.objs/byte/fblexer.cmo Fb/.fb.objs/byte/fbinterp.cmo Fb/.fb.objs/byte/fbdk.cmo Fb/.fb.objs/byte/debugutils.cmo)
-$ (cd _build/default && /Users/gloriatan/.opam/4.13.1/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -w -24 -g -o Fb/.utop/utop.exe -output-complete-exe /Users/gloriatan/.opam/4.13.1/lib/ocaml/compiler-libs/ocamlcommon.cma /Users/gloriatan/.opam/4.13.1/lib/ocaml/compiler-libs/ocamlbytecomp.cma /Users/gloriatan/.opam/4.13.1/lib/ocaml/compiler-libs/ocamltoplevel.cma /Users/gloriatan/.opam/4.13.1/lib/findlib/findlib.cma /Users/gloriatan/.opam/4.13.1/lib/findlib/findlib_top.cma /Users/gloriatan/.opam/4.13.1/lib/result/result.cma /Users/gloriatan/.opam/4.13.1/lib/lwt/lwt.cma /Users/gloriatan/.opam/4.13.1/lib/ocaml/unix.cma -I /Users/gloriatan/.opam/4.13.1/lib/ocaml /Users/gloriatan/.opam/4.13.1/lib/ocaml/bigarray.cma -I /Users/gloriatan/.opam/4.13.1/lib/ocaml /Users/gloriatan/.opam/4.13.1/lib/mmap/mmap.cma /Users/gloriatan/.opam/4.13.1/lib/ocplib-endian/ocplib_endian.cma /Users/gloriatan/.opam/4.13.1/lib/ocplib-endian/bigstring/ocplib_endian_bigstring.cma /Users/gloriatan/.opam/4.13.1/lib/ocaml/threads/threads.cma -I /Users/gloriatan/.opam/4.13.1/lib/ocaml /Users/gloriatan/.opam/4.13.1/lib/lwt/unix/lwt_unix.cma -I /Users/gloriatan/.opam/4.13.1/lib/lwt/unix /Users/gloriatan/.opam/4.13.1/lib/react/react.cma /Users/gloriatan/.opam/4.13.1/lib/lwt_react/lwt_react.cma /Users/gloriatan/.opam/4.13.1/lib/camomile/default_config/camomileDefaultConfig.cma /Users/gloriatan/.opam/4.13.1/lib/camomile/library/camomileLibrary.cma /Users/gloriatan/.opam/4.13.1/lib/camomile/lib_default/camomileLibraryDefault.cma /Users/gloriatan/.opam/4.13.1/lib/camomile/dyn/camomileLibraryDyn.cma /Users/gloriatan/.opam/4.13.1/lib/camomile/camomile_yuge.cma /Users/gloriatan/.opam/4.13.1/lib/charInfo_width/charInfo_width.cma /Users/gloriatan/.opam/4.13.1/lib/zed/zed.cma /Users/gloriatan/.opam/4.13.1/lib/lwt_log/core/lwt_log_core.cma /Users/gloriatan/.opam/4.13.1/lib/lwt_log/lwt_log.cma /Users/gloriatan/.opam/4.13.1/lib/trie/trie.cma /Users/gloriatan/.opam/4.13.1/lib/mew/mew.cma /Users/gloriatan/.opam/4.13.1/lib/mew_vi/mew_vi.cma /Users/gloriatan/.opam/4.13.1/lib/lambda-term/lambda_term.cma -I /Users/gloriatan/.opam/4.13.1/lib/lambda-term /Users/gloriatan/.opam/4.13.1/lib/utop/uTop.cma /Users/gloriatan/.opam/4.13.1/lib/ppx_deriving/runtime/ppx_deriving_runtime.cma Fb/fb.cma Fb/.utop/.utop.eobjs/byte/dune__exe__Utop.cmo -linkall -warn-error -31)
