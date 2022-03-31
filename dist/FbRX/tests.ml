@@ -34,5 +34,6 @@ let ex13 = "{a = 1; b = 1} @ {c = 2; d = 1}";;
 
 let ex14 = "{a = 1; b = 1} @ {a = 2; c = 1}";;
 let ex15 = "{}";;
+let ex16 = "(Let x = {a=5} In x) @ (Let y = {b=6} In y)";;
 
 

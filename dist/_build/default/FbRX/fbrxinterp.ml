@@ -61,6 +61,15 @@ let rec lookupRecord body (Lab l) = match body with
   [] -> (fbLabelNotFound)
 | (Lab l1, v)::t -> if l = l1 then v else lookupRecord t (Lab l);;
 
+let rec containsLabel body (Lab l) = match body with
+  [] -> false
+| (Lab l1, v)::t -> if l = l1 then true else containsLabel t (Lab l);;
+
+(* Append records without duplicates *)
+let rec appendRecords list1 list2 = 
+  match list1 with
+  | [] -> list2
+  | (Lab l1, v)::t -> if (containsLabel list2 (Lab l1)) then appendRecords t list2 else ((Lab l1, v)::(appendRecords t list2));;
 (*
  * Replace this with your interpreter code.
  *)
@@ -148,7 +157,7 @@ let rec eval e =
      Record(body1) -> 
       (
         match (eval e2) with
-          Record(body2) -> Record((body1) @ (body2))
+          Record(body2) -> Record(appendRecords body1 body2)
         | _ -> (fbTypeMismatch)
       )
     | _ -> (fbTypeMismatch) 
