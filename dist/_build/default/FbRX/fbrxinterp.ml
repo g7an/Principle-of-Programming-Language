@@ -77,8 +77,8 @@ let rec eval e =
   match e with
   | Int x -> (Int x)
   | Bool x -> (Bool x)
-  | Var x -> failwith "Unbounded Variable Error"
-  
+  | Var x -> fbLabelNotFound
+  | String x -> (String x)
 (* int *)
   | Plus(e1, e2) -> 
     (
@@ -99,6 +99,7 @@ let rec eval e =
     (let (v1, v2) = (eval e1, eval e2) in
         match (v1, v2) with
         (Int x, Int y) -> (Bool (x = y))
+        | (String x, String y) -> (Bool (x = y))
         | _ -> (fbTypeMismatch)
     )
   
@@ -131,7 +132,7 @@ let rec eval e =
     )
   | Function(x, e1) -> 
     (
-     if (check_closed e []) then (Function (x, e1)) else raise NotClosed
+     if (check_closed e []) then (Function (x, e1)) else (fbLabelNotFound)
     )
   | Appl(e1, e2) ->
     (
@@ -139,6 +140,11 @@ let rec eval e =
       | Appl(e3, e4) -> 
         (eval (Appl(eval e1, e2)))
       | (Function(x, y1)) -> (eval (subst (eval e2) x y1))
+      (* | Select(l, e) -> 
+        (match eval e with
+          Record(body) -> if (lookupRecord body l) != fbLabelNotFound then (eval (Appl(lookupRecord body l, e2))) else (fbLabelNotFound)
+          | _ -> (fbTypeMismatch) 
+        ) *)
       | _ -> (fbTypeMismatch)
     )
   | Let(x, e1, e2) -> 
@@ -157,21 +163,28 @@ let rec eval e =
      Record(body1) -> 
       (
         match (eval e2) with
-          Record(body2) -> Record(appendRecords body1 body2)
+          Record(body2) -> Record((appendRecords body1 body2))
+        | _ -> (fbTypeMismatch)
+      )
+    | String s1 -> 
+      (
+        match (eval e2) with
+          String s2 -> (String (s1 ^ s2))
         | _ -> (fbTypeMismatch)
       )
     | _ -> (fbTypeMismatch) 
   )
     (* exceptions *)
-  | Raise(exnid, e) -> (
+  | Raise(exnid, e) -> 
+    (
       match e with
       | Raise(exnid1, e1) -> Raise(exnid1, (eval e1))
-      | _ -> (eval e)
+      | _ -> Raise(exnid, eval e)
     )
   | Try(e1, exnid, var, e2) -> (
       let v1 = (eval e1) in
         match v1 with
-        | Raise(exnid1, e3) -> (subst (v1) var (e2))
+        (* | Raise(exnid1, e3) -> (subst (v1) var (e2)) *)
         | _ -> (eval e1)
     )
   | _ -> (fbTypeMismatch)

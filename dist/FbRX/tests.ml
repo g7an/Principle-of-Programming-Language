@@ -35,5 +35,21 @@ let ex13 = "{a = 1; b = 1} @ {c = 2; d = 1}";;
 let ex14 = "{a = 1; b = 1} @ {a = 2; c = 1}";;
 let ex15 = "{}";;
 let ex16 = "(Let x = {a=5} In x) @ (Let y = {b=6} In y)";;
+let s1 = "24601";;
+let s2 = "";;
+let ex17 = "\"s1\"=\"s1\"";;
+let ex18 = "\"Don't\" @ \" \" @ \"panic!\"";;
+let ex19 = "\"24601\" @ \"\"";;
+let test = "(Fun x -> x) 1";;
+let ex20 = "({a = (Fun x -> x + 1 )}).a 1";;
+let test2 = "(Function x -> x) 1";;
+(* Appl (
+   (Select ((Lab "a"),
+      (Record
+         [((Lab "a"),
+           (Function ((Ident "x"), (Plus ((Var (Ident "x")), (Int 1))))))])
+      )),
+   (Int 1)) *)
+let ex21 = "({a = 0} @ {a = (Fun x -> x + 1)}).a 1";;
 
 
