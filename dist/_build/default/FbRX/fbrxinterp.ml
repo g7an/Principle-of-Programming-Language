@@ -31,6 +31,9 @@ let rec subst (v: expr) (x) (e: expr) : expr =
     | Let(y, e1, e2) ->   Let(y, substitute e1, if x = y then e2 else (substitute e2))
     | Record(e) -> Record(e)
     | Select(l, e) -> Select(l, substitute e)
+    | Try(e1, exnid, var, e2) -> (
+        Try(substitute e1, exnid, var, substitute e2)
+    )
     | _ -> failwith "substitute error" 
   in substitute e
 
@@ -140,11 +143,11 @@ let rec eval e =
       | Appl(e3, e4) -> 
         (eval (Appl(eval e1, e2)))
       | (Function(x, y1)) -> (eval (subst (eval e2) x y1))
-      (* | Select(l, e) -> 
+      | Select(l, e) -> 
         (match eval e with
           Record(body) -> if (lookupRecord body l) != fbLabelNotFound then (eval (Appl(lookupRecord body l, e2))) else (fbLabelNotFound)
           | _ -> (fbTypeMismatch) 
-        ) *)
+        )
       | _ -> (fbTypeMismatch)
     )
   | Let(x, e1, e2) -> 
@@ -184,7 +187,7 @@ let rec eval e =
   | Try(e1, exnid, var, e2) -> (
       let v1 = (eval e1) in
         match v1 with
-        (* | Raise(exnid1, e3) -> (subst (v1) var (e2)) *)
+        | Raise(exnid1, e3) -> (subst (v1) var (e2))
         | _ -> (eval e1)
     )
   | _ -> (fbTypeMismatch)

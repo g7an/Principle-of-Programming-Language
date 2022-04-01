@@ -31,6 +31,9 @@ let rec subst (v: expr) (x) (e: expr) : expr =
     | Let(y, e1, e2) ->   Let(y, substitute e1, if x = y then e2 else (substitute e2))
     | Record(e) -> Record(e)
     | Select(l, e) -> Select(l, substitute e)
+    | Try(e1, exnid, var, e2) -> (
+        Try(substitute e1, exnid, var, substitute e2)
+    )
     | _ -> failwith "substitute error" 
   in substitute e
 
