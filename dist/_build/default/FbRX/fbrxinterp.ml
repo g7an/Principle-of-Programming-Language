@@ -1,3 +1,5 @@
+(* Your Name : Shuyao Tan
+List of Collaborators : Tingyao Li, Mengchu Li, Yuyang Zhou *)
 open Fbrxast
 
 exception NotClosed
@@ -34,7 +36,7 @@ let rec subst (v: expr) (x) (e: expr) : expr =
     | Try(e1, exnid, var, e2) -> (
         Try(substitute e1, exnid, var, substitute e2)
     )
-    | _ -> failwith "substitute error" 
+    | _ -> fbTypeMismatch
   in substitute e
 
 let rec check_closed exp list = 
@@ -80,7 +82,7 @@ let rec eval e =
   match e with
   | Int x -> (Int x)
   | Bool x -> (Bool x)
-  | Var x -> fbLabelNotFound
+  | Var x -> raise NotClosed
   | String x -> (String x)
 (* int *)
   | Plus(e1, e2) -> 
@@ -135,7 +137,7 @@ let rec eval e =
     )
   | Function(x, e1) -> 
     (
-     if (check_closed e []) then (Function (x, e1)) else (fbLabelNotFound)
+     if (check_closed e []) then (Function (x, e1)) else raise NotClosed
     )
   | Appl(e1, e2) ->
     (

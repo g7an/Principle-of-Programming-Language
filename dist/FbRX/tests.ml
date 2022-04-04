@@ -51,5 +51,8 @@ let test2 = "(Function x -> x) 1";;
       )),
    (Int 1)) *)
 let ex21 = "({a = 0} @ {a = (Fun x -> x + 1)}).a 1";;
+let ex22 = "Try Raise #abc (0) With #Return n -> n";;
+
+let ex23 = "(Function y -> x) 1";;
 
 
