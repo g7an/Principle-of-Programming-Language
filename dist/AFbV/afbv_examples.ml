@@ -37,7 +37,9 @@
    It is not run by any particular actor.  To make an interesting actor system
    the bootstrap code needs to create at least one actor and send it at least one message. 
 *)
-
+let pair = "(2, 3)";;
+let pair1 = "Fst (2, 3)";;
+let pair2 = "Snd (2, 3)";;
 let ex0 = "Match `Grilled(3+1) With
 `Stewed(x) -> x |
 `Grilled(y) -> y";;
