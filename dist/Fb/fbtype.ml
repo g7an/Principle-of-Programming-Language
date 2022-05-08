@@ -22,57 +22,13 @@ exception NotTypable;;
  *) 
 let typecheck_default_enabled = true;;
 
-(*
- * Replace this with your typechecker code.  Your code should not throw the
- * following exception; if you need to raise an exception, create your own
- * exception type here.
- *) 
-
- (* 
- argument2: gamma_list;
- lookup the type of variable x 
- *)
- (* let rec lookup list x = 
-  match list with
-  | (a, b)::tl -> if x = a then b else (lookup tl x)
-  | [] -> raise NotTypable
-  ;; *)
-(* find the second element of tuple by giving the first element of tuple, store all the possible results in a list *)
-(* let rec lookup list x = 
-  match list with
-  | (a, b)::tl -> if x = a then b::(lookup tl x) else (lookup tl x)
-  | [] -> []
-  ;;
-
-  (* find the smallest element in a list *)
-let rec find_smallest list min_ele = 
-  match list with
-  | hd::tl -> if hd < min_ele then find_smallest tl hd else find_smallest tl min_ele
-  | [] -> min_ele;;
-
-let lookup_type list x = 
-  (let lst = lookup list x in
-  (
-    (* if lst is empty raise not_typable error; else find the smallest element in lst *)
-    if lst = [] then raise NotTypable
-    else find_smallest lst (List.hd lst)
-  ));; *)
-
   let rec lookup_type list x = 
     match list with
     | (a, b)::tl -> if x = a then b else (lookup_type tl x)
     | [] -> raise NotTypable
     ;;
 
-
-
-let rec help_cnt e = 
-  match e with
-  | If(e1, e2, e3) -> 1 + (help_cnt e1) + (help_cnt e2) + (help_cnt e3)
-  | Function(x, e2) -> 1 + (help_cnt e2)
-  | Appl(e1, e2) -> 1 + (help_cnt e1) + (help_cnt e2)
-  | _ -> 0
-;;
+  let counter = ref 1;;
 
 
 (* refer to: https://stackoverflow.com/a/30634435
@@ -123,11 +79,12 @@ let remove_duplicates xs = List.rev (List.fold_left cons_uniq [] xs);;
       (TBool, equation)
     )
   | If(e1, e2, e3) -> (
-      let cnt = ((help_cnt e) + carry) in
+      (* let cnt = ((help_cnt e) + carry) in *)
+      let cnt = (!counter) in incr counter;
       let alpha = TVar("a" ^ string_of_int(cnt)) in
       let (s1, eq1) = (type_generate e1 gamma_list 0) in
-      let (s2, eq2) = (type_generate e2 gamma_list 0)in
-      let (s3, eq3) = (type_generate e3 gamma_list 1)in
+      let (s2, eq2) = (type_generate e2 gamma_list 0) in
+      let (s3, eq3) = (type_generate e3 gamma_list 1) in
       let equation = (eq1 @ eq2 @ eq3 @ [(s1, TBool); (s2, alpha); (s3, alpha); (s2, s3)]) in
       (alpha, equation)
     )
@@ -140,13 +97,15 @@ let remove_duplicates xs = List.rev (List.fold_left cons_uniq [] xs);;
       (* 1. append x: tick_a into gamma list
       2. tick_a = type_generate x and tau, equation = type_generate e
       3. return TArrow(tick_a, tau) @ equation *)
-      let cnt = ((help_cnt e) + carry) in
+      (* let cnt = ((help_cnt e) + carry) in *)
+      let cnt = (!counter) in incr counter;
       let tick_a = TVar("a" ^ string_of_int(cnt)) in
       let (tau, equation) = (type_generate e1 ((x, tick_a)::gamma_list) 0) in
       (TArrow(tick_a, tau), equation)
     )
   | Appl(e1, e2) -> (
-      let cnt = ((help_cnt e) + carry) in
+      (* let cnt = ((help_cnt e) + carry) in *)
+      let cnt = (!counter) in incr counter;
       let alpha = TVar("a" ^ string_of_int(cnt)) in
       let (s1, eq1) = (type_generate e1 gamma_list 0) in
       let (s2, eq2) = (type_generate e2 gamma_list 0) in
@@ -159,133 +118,7 @@ let remove_duplicates xs = List.rev (List.fold_left cons_uniq [] xs);;
     )
   | _ -> raise NotTypable;;
 
-(* 
-let test = parse "If 1 = 2 Then (Fun x -> x) Else (Fun y -> y + 1)";;
--> 
-  [(TInt, TInt); (TInt, TInt); ((TVar "a3"), TInt); (TInt, TInt);
-  (TBool, TBool); ((TArrow ((TVar "a2"), (TVar "a2"))), (TVar "a3"));
-  ((TArrow ((TVar "a3"), TInt)), (TVar "a3"))];;
 
-  perform_closure 
-  -> [(TInt, TInt); ((TVar "a3"), TInt); (TBool, TBool);
- ((TArrow ((TVar "a2"), (TVar "a2"))), (TVar "a3"));
- ((TArrow ((TVar "a3"), TInt)), (TVar "a3")); (TInt, (TVar "a3"));
- (TInt, (TArrow ((TVar "a2"), (TVar "a2"))));
- (TInt, (TArrow ((TVar "a3"), TInt)));
- ((TArrow ((TVar "a2"), (TVar "a2"))), (TArrow ((TVar "a3"), TInt)));
- ((TVar "a3"), (TArrow ((TVar "a2"), (TVar "a2"))));
- ((TVar "a3"), (TArrow ((TVar "a3"), TInt)));
- ((TArrow ((TVar "a2"), (TVar "a2"))), TInt);
- ((TArrow ((TVar "a3"), TInt)), TInt); ((TVar "a2"), (TVar "a3"));
- ((TVar "a2"), TInt); (TInt, (TVar "a2")); ((TVar "a3"), (TVar "a2"));
- ((TVar "a3"), (TVar "a3"));
- ((TArrow ((TVar "a2"), (TVar "a2"))), (TVar "a2"));
- ((TArrow ((TVar "a3"), TInt)), (TArrow ((TVar "a2"), (TVar "a2"))));
- ((TArrow ((TVar "a3"), TInt)), (TVar "a2"));
- ((TArrow ((TVar "a2"), (TVar "a2"))), (TArrow ((TVar "a2"), (TVar "a2"))));
- ((TArrow ((TVar "a3"), TInt)), (TArrow ((TVar "a3"), TInt)));
- ((TVar "a2"), (TArrow ((TVar "a3"), TInt)));
- ((TVar "a2"), (TArrow ((TVar "a2"), (TVar "a2"))));
- ((TVar "a2"), (TVar "a2"))]
-
-
-let test = parse "Fun f -> Fun g -> If f 0 Then g f Else 0";;
-f 0 : int -> bool
-g f : bool -> int
-
-a5 (int -> bool) -> a4 (bool -> int) -> a3 (int)
-
--> ((TArrow ((TVar "a5"), (TArrow ((TVar "a4"), (TVar "a3"))))),
- [((TVar "a5"), (TArrow (TInt, (TVar "a1"))));
-  ((TVar "a4"), (TArrow ((TVar "a5"), (TVar "a2")))); ((TVar "a1"), TBool);
-  ((TVar "a2"), (TVar "a3")); (TInt, (TVar "a3"))])
-
-remove_duplicates (perform_closure [((TVar "a5"), (TArrow (TInt, (TVar "a1"))));
-  ((TVar "a4"), (TArrow ((TVar "a5"), (TVar "a2")))); ((TVar "a1"), TBool);
-  ((TVar "a2"), (TVar "a3")); (TInt, (TVar "a3"))]);;
--> [((TVar "a5"), (TArrow (TInt, (TVar "a1"))));
- ((TVar "a4"), (TArrow ((TVar "a5"), (TVar "a2")))); ((TVar "a1"), TBool);
- ((TVar "a2"), (TVar "a3")); (TInt, (TVar "a3")); ((TVar "a2"), TInt);
- ((TVar "a3"), TInt); ((TVar "a3"), (TVar "a2")); ((TVar "a3"), (TVar "a3"));
- (TInt, (TVar "a2")); (TInt, TInt)]
-
- substitute_equation (TArrow ((TVar "a5"), (TArrow ((TVar "a4"), (TVar "a3"))))) [((TVar "a5"), (TArrow (TInt, (TVar "a1"))));
- ((TVar "a4"), (TArrow ((TVar "a5"), (TVar "a2")))); ((TVar "a1"), TBool);
- ((TVar "a2"), (TVar "a3")); (TInt, (TVar "a3")); ((TVar "a2"), TInt);
- ((TVar "a3"), TInt); ((TVar "a3"), (TVar "a2")); ((TVar "a3"), (TVar "a3"));
- (TInt, (TVar "a2")); (TInt, TInt)];;
-
-let test = parse "(Fun x -> x + ((Fun x -> If x Then 0 Else 1) True))";;
-  (Function ((Ident "x"),
-     (Plus ((Var (Ident "x")),
-        (Appl (
-           (Function ((Ident "x"), (If ((Var (Ident "x")), (Int 0), (Int 1))))),
-           (Bool true)))
-        ))
-     )) 
-
-     ((TArrow ((TVar "a1"), TInt)),
- [((TVar "a1"), TBool); (TInt, (TVar "a1")); (TInt, (TVar "a1"));
-  ((TArrow ((TVar "a2"), (TVar "a1"))), (TArrow (TBool, (TVar "a3"))));
-  ((TVar "a1"), TInt); ((TVar "a3"), TInt)])
-
-let test = parse "(Fun x -> Fun x -> x)";; 
-((TArrow ((TVar "a2"), (TArrow ((TVar "a1"), (TVar "a1"))))), [])
-   perform_closure (TArrow ((TVar "tick_a1"), (TVar "tick_a1"))) [];;
-
-   let test = parse "1+True";; 
-   (TInt, [(TInt, TInt); (TBool, TInt)])
-   
-   perform_closure TInt [(TInt, TInt); (TBool, TInt)];;
-   [(TInt, TBool)]
-
-   let test = parse "If 1 = 2 Then 1 + 1 Else 1 - 1";; 
-   ((TVar "tick_a1"),
- [(TInt, TInt); (TInt, TInt); (TInt, TInt); (TInt, TInt); (TInt, TInt);
-  (TInt, TInt); (TBool, TBool); (TInt, (TVar "tick_a1"));
-  (TInt, (TVar "tick_a1"))])
-  
-  perform_closure (TVar "tick_a1") [(TInt, TInt); (TInt, TInt); (TInt, TInt); (TInt, TInt); (TInt, TInt);
-  (TInt, TInt); (TBool, TBool); (TInt, (TVar "tick_a1"));
-  (TInt, (TVar "tick_a1"))]
-
-  remove_duplicates [(TInt, TInt); (TInt, TInt); (TInt, TInt); (TInt, TInt); (TInt, TInt);
- (TInt, (TVar "tick_a1")); (TInt, (TVar "tick_a1")); (TInt, TInt);
- (TInt, TInt); (TInt, TInt); (TInt, TInt); (TInt, (TVar "tick_a1"));
- (TInt, (TVar "tick_a1")); (TInt, TInt); (TInt, TInt); (TInt, TInt);
- (TInt, (TVar "tick_a1")); (TInt, (TVar "tick_a1")); (TInt, TInt);
- (TInt, TInt); (TInt, (TVar "tick_a1")); (TInt, (TVar "tick_a1"));
- (TInt, TInt); (TInt, (TVar "tick_a1")); (TInt, (TVar "tick_a1"));
- (TInt, (TVar "tick_a1")); (TInt, (TVar "tick_a1"));
- ((TVar "tick_a1"), (TVar "tick_a1"))];;
-
-  check_inconsistencies [(TInt, TInt); (TInt, (TVar "tick_a1")); ((TVar "tick_a1"), (TVar "tick_a1"))];;
-
-  let test = parse "(Fun x -> x = 1) True";;
-
-  perform_closure [((TVar "tick_a1"), TInt); (TInt, TInt);
-  ((TArrow ((TVar "tick_a1"), TBool)), (TArrow (TBool, (TVar "tick_a2"))))]
-  -> [((TVar "tick_a1"), TInt); (TInt, TInt);
- ((TArrow ((TVar "tick_a1"), TBool)), (TArrow (TBool, (TVar "tick_a2"))));
- ((TVar "tick_a1"), TInt); ((TVar "tick_a1"), TBool);
- (TBool, (TVar "tick_a2"))]
-
- remove_duplicates [((TVar "tick_a1"), TInt); (TInt, TInt);
- ((TArrow ((TVar "tick_a1"), TBool)), (TArrow (TBool, (TVar "tick_a2"))));
- ((TVar "tick_a1"), TInt); ((TVar "tick_a1"), TBool);
- (TBool, (TVar "tick_a2"))]
- -> [((TVar "tick_a1"), TInt); (TInt, TInt);
- ((TArrow ((TVar "tick_a1"), TBool)), (TArrow (TBool, (TVar "tick_a2"))));
- ((TVar "tick_a1"), TBool); (TBool, (TVar "tick_a2"))]
-check_inconsistencies [((TVar "tick_a1"), TInt); (TInt, TInt);
- ((TArrow ((TVar "tick_a1"), TBool)), (TArrow (TBool, (TVar "tick_a2"))));
- ((TVar "tick_a1"), TBool); (TBool, (TVar "tick_a2"))]
-
- let test = "Fun f -> f 100";;
- 
-
-
-*)
 (* helper *)
 let rec help_check hd tl = 
   (* loop through tail and add the qualified new tuple to the return list *)
@@ -321,32 +154,13 @@ let rec add_closure equation =
       (help_check hd tl) @ (add_closure tl) 
     );;
 
-(* let rec perform_closure equation = equation @  
-(if (add_closure equation) = [] then [] else (perform_closure (add_closure equation)));; *)
-(* if the list is "stablized" (no more new tuples) then return the list, else check if new equation can be added *)
 let rec perform_closure equation = 
   (
     let new_equation = (remove_duplicates (equation @ (add_closure equation))) in
       if ((List.length new_equation) = (List.length equation)) 
         then equation else (perform_closure new_equation)
   );;
-  (* equation @  
-(if (add_closure equation) = [] then [] else (perform_closure (add_closure equation)));; *)
 
-(* 
-let test = parse "(Fun s -> Fun x -> If s Then x Else x - 1)";; 
-
-((TArrow ((TVar "a3"), (TArrow ((TVar "a2"), (TVar "a1"))))),
- [((TVar "a2"), TInt); (TInt, TInt); ((TVar "a3"), TBool);
-  ((TVar "a2"), (TVar "a1")); (TInt, (TVar "a1"))])
-
-perform_closure 
-[((TVar "a2"), TInt); (TInt, TInt); ((TVar "a3"), TBool);
-  ((TVar "a2"), (TVar "a1")); (TInt, (TVar "a1"))]
-
-*)
-
-    (* ocaml: remove duplicate tuples in list *)
 
 (* helper *)
 let rec check_contain tau tick_b = 
@@ -421,17 +235,7 @@ let rec check_inconsistencies equation =
       if (inner_looper (tau0, tau1) tl) then (check_inconsistencies tl) else false
     )
   ;;
-   (* check_inconsistencies [((TVar "tick_a1"), TInt); 
- ((TVar "tick_a1"), TBool)];; *)
-  (* check_inconsistencies [((TVar "tick_a1"), TInt); (TInt, TInt);
- ((TVar "tick_a1"), TBool); (TBool, (TVar "tick_a2"))];; *)
-  (* check_inconsistencies [((TVar "tick_a1"), TInt); (TInt, TInt);
- ((TArrow ((TVar "tick_a1"), TBool)), (TArrow (TBool, (TVar "tick_a2"))));
- ((TVar "tick_a1"), TBool); (TBool, (TVar "tick_a2"))];; *)
 
-  (* let rec check_cyclic equation *)
-
-  (* find_substitution, once find one, return *)
 let rec find_substitution tau equation = 
 match equation with
   | [] -> tau
@@ -443,209 +247,46 @@ match equation with
    )
 ;;
 
-
-let rec substitute_equation tau equation = 
-match tau with
-| TInt -> TInt
-| TBool -> TBool
-| TArrow(tau1, tau2) -> TArrow(substitute_equation tau1 equation, substitute_equation tau2 equation)
-| TVar(x) -> 
-  (
-    match equation with
-    | [] -> tau
-    | hd::tl -> (
-      (* if tau = tau0 then tau1 else if tau = tau1 then tau0 else (substitute_equation tau tl) *)
-      let result = (find_substitution tau equation) in 
-      (substitute_equation result tl)
-    )  
-  )
-;;
-
-(* 
-let test = parse "Fun f -> Fun g -> If f 0 Then g f Else 0";;
-f 0 : int -> bool
-g f : bool -> int
-
-a5 (int -> bool) -> a4 (bool -> int) -> a3 (int)
-
--> ((TArrow ((TVar "a5"), (TArrow ((TVar "a4"), (TVar "a3"))))),
- [((TVar "a5"), (TArrow (TInt, (TVar "a1"))));
-  ((TVar "a4"), (TArrow ((TVar "a5"), (TVar "a1")))); ((TVar "a1"), TBool);
-  ((TVar "a1"), (TVar "a3")); (TInt, (TVar "a3"))])
-
-remove_duplicates (perform_closure [((TVar "a5"), (TArrow (TInt, (TVar "a1"))));
-  ((TVar "a4"), (TArrow ((TVar "a5"), (TVar "a1")))); ((TVar "a1"), TBool);
-  ((TVar "a1"), (TVar "a3")); (TInt, (TVar "a3"))]) ;;
--> [((TVar "a5"), (TArrow (TInt, (TVar "a1"))));
- ((TVar "a4"), (TArrow ((TVar "a5"), (TVar "a1")))); ((TVar "a1"), TBool);
- ((TVar "a1"), (TVar "a3")); (TInt, (TVar "a3")); (TBool, (TVar "a3"));
- ((TVar "a1"), TInt); (TBool, TInt); ((TVar "a3"), TInt); (TInt, TBool);
- ((TVar "a3"), (TVar "a1")); ((TVar "a3"), (TVar "a3")); ((TVar "a3"), TBool);
- (TInt, (TVar "a1")); (TBool, (TVar "a1")); (TInt, TInt); (TBool, TBool)]
-
- check_inconsistencies [((TVar "a5"), (TArrow (TInt, (TVar "a1"))));
- ((TVar "a4"), (TArrow ((TVar "a5"), (TVar "a1")))); ((TVar "a1"), TBool);
- ((TVar "a1"), (TVar "a3")); (TInt, (TVar "a3")); (TBool, (TVar "a3"));
- ((TVar "a1"), TInt); (TBool, TInt); ((TVar "a3"), TInt); (TInt, TBool);
- ((TVar "a3"), (TVar "a1")); ((TVar "a3"), (TVar "a3")); ((TVar "a3"), TBool);
- (TInt, (TVar "a1")); (TBool, (TVar "a1")); (TInt, TInt); (TBool, TBool)];;
-
-substitute_equation (TArrow ((TVar "a4"), (TArrow ((TVar "a3"), (TVar "a2"))))) 
-  [((TVar "a4"), (TArrow ((TVar "a3"), (TVar "a1"))));
-    ((TVar "a4"), (TArrow ((TVar "a1"), (TVar "a2"))));
-    ((TArrow ((TVar "a3"), (TVar "a1"))), (TArrow ((TVar "a1"), (TVar "a2"))))]
+let rec replace equation t v_string = 
+  match equation with
+  | [] -> t
+  | (t1, t2)::tail ->
+    if t1 = t then 
+      (match t2 with
+        | TVar v -> (
+          if (v > v_string) then t2
+          else (replace tail t v_string)
+          )
+        | _ -> t2)
+    else if t2 = t then 
+      (match t1 with
+        | TVar v -> (
+          if (v > v_string) then t1
+          else (replace tail t v_string)
+          )
+        | _ -> t1)
+    else (replace tail t v_string)
   ;;
-  -> (TArrow ((TArrow ((TVar "a3"), (TVar "a1"))),
-   (TArrow ((TVar "a3"), (TVar "a2")))))
 
 
-substitute_equation 
-(TArrow ((TVar "a3"), (TArrow ((TVar "a2"), (TVar "a1"))))) 
-[((TVar "a2"), TInt); (TInt, TInt); ((TVar "a3"), TBool);
-((TVar "a2"), (TVar "a1")); (TInt, (TVar "a1"))] 
-*)
-(* substitute_equation (TArrow ((TVar "tick_a1"), (TVar "tick_a1"))) [];; *)
-
-(* nested for loop to loop through every 2 elements in a list *)
-
-(* let w = parse "(1+2)";;
-let func = parse "(Fun x -> x) 5";; 
-let if_test = parse "If True Then 1 Else 2";;
-let if_test2 = parse "If True Then (If True Then 3 Else 4) Else 2";;
-
-*)
-(* let func = parse "(Let x = 5 In Fun y -> x + y)";; *)
-
-  (* "type_generate (1+2)";; *)
-  (* type_generate @@ parse "If True Then 1 Else 2";; *)
+let rec substitute_equation equation t = 
+  match t with
+    | TInt -> TInt
+    | TBool -> TBool
+    | TArrow(d, r) -> TArrow((substitute_equation equation d), (substitute_equation equation r))
+    | TVar v -> 
+      (let replace_type = (replace equation t v) in
+      match replace_type with
+      | TVar v1 ->
+        if (v1 = v) then replace_type
+        else (substitute_equation equation replace_type)  
+      | _ -> (substitute_equation equation replace_type))
+    ;;
 
 
 let typecheck e = 
+  counter := 1;
   let (tau, equation) = (type_generate e [] 0) in 
   let equation2 = (remove_duplicates (perform_closure equation)) in
-  if (check_inconsistencies equation2) then (substitute_equation tau equation2)
+  if (check_inconsistencies equation2) then (substitute_equation equation2 tau)
   else raise NotTypable;;
-
-(* 
-let test = parse "(Fun x -> x + ((Fun x -> If x Then 0 Else 1) True))";;
-let test = parse "Fun x -> x + ((Fun x -> If x Then 0 Else 1) True)";;
- type_generate test [];;
- -> ((TArrow ((TVar "a1"), TInt)),
- [((TVar "a1"), TBool); (TInt, (TVar "a1")); (TInt, (TVar "a1"));
-  ((TArrow ((TVar "a2"), (TVar "a1"))), (TArrow (TBool, (TVar "a3"))));
-  ((TVar "a1"), TInt); ((TVar "a3"), TInt)])
-
-  perform_closure [((TVar "a1"), TBool); (TInt, (TVar "a1")); (TInt, (TVar "a1"));
-  ((TArrow ((TVar "a2"), (TVar "a1"))), (TArrow (TBool, (TVar "a3"))));
-  ((TVar "a1"), TInt); ((TVar "a3"), TInt)];;
-  -> 
- [((TVar "a1"), TBool); (TInt, (TVar "a1"));
- ((TArrow ((TVar "a2"), (TVar "a1"))), (TArrow (TBool, (TVar "a3"))));
- ((TVar "a1"), TInt); ((TVar "a3"), TInt); (TBool, TInt);
- ((TVar "a1"), (TVar "a1")); ((TVar "a1"), (TVar "a3")); ((TVar "a2"), TBool);
- (TBool, (TVar "a1")); (TBool, (TVar "a3")); ((TVar "a1"), (TVar "a2"));
- (TInt, (TVar "a3")); ((TVar "a3"), TBool); (TInt, (TVar "a2"));
- (TBool, TBool); (TBool, (TVar "a2")); (TInt, TBool); (TInt, TInt);
- ((TVar "a3"), (TVar "a2")); ((TVar "a2"), (TVar "a1"));
- ((TVar "a2"), (TVar "a3")); ((TVar "a3"), (TVar "a3")); ((TVar "a2"), TInt);
- ((TVar "a2"), (TVar "a2")); ((TVar "a3"), (TVar "a1"))]
-
-  check_inconsistencies [((TVar "a1"), TBool); (TInt, (TVar "a1"));
- ((TArrow ((TVar "a2"), (TVar "a1"))), (TArrow (TBool, (TVar "a3"))));
- ((TVar "a1"), TInt); ((TVar "a3"), TInt); (TBool, TInt);
- ((TVar "a1"), (TVar "a1")); ((TVar "a1"), (TVar "a3")); ((TVar "a2"), TBool);
- (TBool, (TVar "a1")); (TBool, (TVar "a3")); ((TVar "a1"), (TVar "a2"));
- (TInt, (TVar "a3")); ((TVar "a3"), TBool); (TInt, (TVar "a2"));
- (TBool, TBool); (TBool, (TVar "a2")); (TInt, TBool); (TInt, TInt);
- ((TVar "a3"), (TVar "a2")); ((TVar "a2"), (TVar "a1"));
- ((TVar "a2"), (TVar "a3")); ((TVar "a3"), (TVar "a3")); ((TVar "a2"), TInt);
- ((TVar "a2"), (TVar "a2")); ((TVar "a3"), (TVar "a1"))];;
-
-
-let test = parse "Fun f -> Fun x -> f (f x)";; 
--> (
-  (TArrow ((TVar "a4"), (TArrow ((TVar "a3"), (TVar "a2"))))),
- [((TVar "a4"), (TArrow ((TVar "a3"), (TVar "a1"))));
-  ((TVar "a4"), (TArrow ((TVar "a1"), (TVar "a2"))))]
-  )
-
-  remove_duplicates (perform_closure [((TVar "a4"), (TArrow ((TVar "a3"), (TVar "a1"))));
-  ((TVar "a4"), (TArrow ((TVar "a1"), (TVar "a2"))))] );;
--> [((TVar "a4"), (TArrow ((TVar "a3"), (TVar "a1"))));
-    ((TVar "a4"), (TArrow ((TVar "a1"), (TVar "a2"))));
-    ((TArrow ((TVar "a3"), (TVar "a1"))), (TArrow ((TVar "a1"), (TVar "a2"))))]
-   
-  substitute_equation (TArrow ((TVar "a4"), (TArrow ((TVar "a3"), (TVar "a2"))))) 
-  [((TVar "a4"), (TArrow ((TVar "a3"), (TVar "a1"))));
-    ((TVar "a4"), (TArrow ((TVar "a1"), (TVar "a2"))));
-    ((TArrow ((TVar "a3"), (TVar "a1"))), (TArrow ((TVar "a1"), (TVar "a2"))))]
-  ;;
-*)
-
-  (* let test = parse "(Fun s -> Fun x -> If s Then x Else x - 1)";;
-   -> (
-     (TArrow ((TVar "a3"), (TArrow ((TVar "a2"), (TVar "a1"))))),
-   [((TVar "a2"), TInt); (TInt, TInt); ((TVar "a3"), TBool);
-  ((TVar "a2"), (TVar "a1")); (TInt, (TVar "a1"))]
-  )
-  remove_duplicates (perform_closure [((TVar "a2"), TInt); (TInt, TInt); ((TVar "a3"), TBool);
-  ((TVar "a2"), (TVar "a1")); (TInt, (TVar "a1"))]);;
-  -> [((TVar "a2"), TInt); (TInt, TInt); ((TVar "a3"), TBool);
- ((TVar "a2"), (TVar "a1")); (TInt, (TVar "a1"))]
-
- check_inconsistencies [((TVar "a2"), TInt); (TInt, TInt); ((TVar "a3"), TBool);
- ((TVar "a2"), (TVar "a1")); (TInt, (TVar "a1"))] ;;
-
- substitute_equation (TArrow ((TVar "a3"), (TArrow ((TVar "a2"), (TVar "a1"))))) [((TVar "a2"), TInt); (TInt, TInt); ((TVar "a3"), TBool);
- ((TVar "a2"), (TVar "a1")); (TInt, (TVar "a1"))]
-
-
-*)
-(* let test = parse "0 0";; *)
-(* let test = parse "Fun x -> Fun y -> Fun z -> If True Then (If True Then x Else y) Else (If True Then y Else z)";; *)
-(* let test = parse "Fun x -> Fun x -> x";; *)
-(* 
-let test = parse "(0 0)";;
-
-perform_closure [(TInt, (TArrow (TInt, (TVar "tick_a1"))))]
-
-remove_duplicates [(TInt, (TArrow (TInt, (TVar "tick_a1"))))]
-
-check_inconsistencies [(TInt, (TArrow (TInt, (TVar "tick_a1"))))]
-
-let test = parse "Fun x -> Fun x -> x";;
-
-type: TArrow ((TVar "tick_a2"), (TArrow ((TVar "tick_a1"), (TVar "tick_a2")))))
-
-perform_closure []
-
-check_inconsistencies 
-
-*)
-
-
-  (* | Var x -> (match x with 
-            | y -> (TVar y, [])) *)
-  
-    (* TInt; [(tau, Int); (tau', Int)] *)
-  (* | Var(x) -> (
-      (* look up the type of variable x in gamma_list *)
-      let tau = (lookup gamma_list x) in
-      (tau, [])
-    )
-  | Function(x, e) -> (
-      (* 1. append x: tick_a into gamma list
-      2. tick_a = type_generate x and tau, equation = type_generate e
-      3. return TArrow(tick_a, tau) @ equation *)
-      let cnt = (help_cnt e) in
-      let tick_a = TVar("tick_a" ^ string_of_int(cnt)) in
-      let (tau, equation) = (type_generate e (gamma_list @ [(x, tick_a)])) in
-      (TArrow(tick_a, tau), equation)
-    )
-  | Appl(e1, e2) -> (
-      let cnt = (help_cnt e) in
-      let (s1, eq1) = (type_generate e1 gamma_list) in
-      let (s2, eq2) = (type_generate e2 gamma_list) in
-      let equation = (eq1 @ eq2 @ [(s1, TArrow(s2, TVar("tick_a" ^ string_of_int(cnt))))]) in
-      (s1, equation)
-    ) *)
